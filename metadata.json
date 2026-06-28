@@ -1,0 +1,6 @@
+{
+  "name": "Ravora Textiles",
+  "description": "An elegant South Indian e-commerce platform combining vibrant colors, traditional motifs, and modern styles.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
