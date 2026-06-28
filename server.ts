@@ -7,8 +7,8 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { Product, User, Order } from "./src/types";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __filename = typeof import.meta !== "undefined" && import.meta.url ? fileURLToPath(import.meta.url) : "";
+const __dirname = typeof import.meta !== "undefined" && import.meta.url ? dirname(__filename) : "";
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 const DB_FILE = path.join(process.cwd(), "db.json");
