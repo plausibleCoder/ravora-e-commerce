@@ -10,7 +10,7 @@ import { Product, User, Order } from "./src/types";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const PORT = 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 const DB_FILE = path.join(process.cwd(), "db.json");
 const JWT_SECRET = process.env.JWT_SECRET || "ravora_textiles_secret_jwt_key_2026";
 
