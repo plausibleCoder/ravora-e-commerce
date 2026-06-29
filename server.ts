@@ -296,7 +296,12 @@ const defaultStories = {
   }
 };
 
+let dbInMemory: DBStructure;
+
 function loadDB(): DBStructure {
+  if (dbInMemory) {
+    return dbInMemory;
+  }
   if (!fs.existsSync(DB_FILE)) {
     const data: DBStructure = {
       products: initialProducts,
@@ -304,7 +309,12 @@ function loadDB(): DBStructure {
       orders: [],
       stories: defaultStories
     };
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+    try {
+      fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+    } catch (err) {
+      console.error("Error creating initial DB file:", err);
+    }
+    dbInMemory = data;
     return data;
   }
   try {
@@ -318,15 +328,23 @@ function loadDB(): DBStructure {
     if (updated) {
       fs.writeFileSync(DB_FILE, JSON.stringify(parsed, null, 2));
     }
+    dbInMemory = parsed;
     return parsed;
   } catch (e) {
     console.error("Error reading database file, returning defaults", e);
-    return { products: initialProducts, users: defaultUsers, orders: [], stories: defaultStories };
+    const fallback: DBStructure = { products: initialProducts, users: defaultUsers, orders: [], stories: defaultStories };
+    dbInMemory = fallback;
+    return fallback;
   }
 }
 
 function saveDB(data: DBStructure) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  dbInMemory = data;
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.error("Error writing to DB file:", err);
+  }
 }
 
 // Ensure database is initialized
